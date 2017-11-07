@@ -8,10 +8,10 @@ class wtp_widget extends WP_Widget {
         'wtp_widget', 
         
         // Widget name will appear in UI
-        __('Weather Widget', 'wtp_widget_domain'), 
+        __('Weather Widget', 'weather-text-plugin'), 
         
         // Widget description
-        array( 'description' => __( 'Present weather from latitude and longitude', 'wtp_widget_domain' ), ) 
+        array( 'description' => __( 'Present weather from latitude and longitude', 'weather-text-plugin' ), ) 
         );
     }
     
@@ -27,12 +27,17 @@ class wtp_widget extends WP_Widget {
         // This is where you run the code and display the output
         $lat=get_option('latitude');
         $lng=get_option('longitude');
-        $weather_info=wtp_getWeather($lat,$lng);
+
+        if ( false === ( $weather_info = wp_cache_get( "{$lat},{$lng}", "wtp" ) ) ) {
+            $weather_info=wtp_getWeather($lat,$lng);
+            wp_cache_set( "{$lat},{$lng}", $weather_info, "wtp", HOUR_IN_SECONDS );
+        }
+
         $weather_info_location=$weather_info->query->results->channel->location;
         $weather_info_temp=$weather_info->query->results->channel->item->condition->temp;
+
         echo "{$weather_info_location->city}, {$weather_info_location->region}, {$weather_info_location->country}<br/>";
-        echo "Temperatura: ";
-        echo "{$weather_info_temp}ºC";
+        printf(__('Temperature: %sºC','weather-text-plugin'), $weather_info_temp);
 
         echo $args['after_widget'];
     }

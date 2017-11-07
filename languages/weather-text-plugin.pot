@@ -1,0 +1,35 @@
+#: weather-text-plugin.php:53
+msgid "Temperature"
+msgstr ""
+
+#: weather-text-plugin.php:55
+msgid "is"
+msgstr ""
+
+#: weather-text-plugin.php:63
+msgid "Weather plugin"
+msgstr ""
+
+#: weather-text-plugin.php:77
+msgid "Location"
+msgstr ""
+
+#: weather-text-plugin.php:83
+msgid "Latitude"
+msgstr ""
+
+#: weather-text-plugin.php:87
+msgid "Longitude"
+msgstr ""
+
+#: wtp_widget.php:11
+msgid "Weather Widget"
+msgstr ""
+
+#: wtp_widget.php:14
+msgid "Present weather from latitude and longitude"
+msgstr ""
+
+#: wtp_widget.php:40
+msgid "Temperature: %sºC"
+msgstr ""
