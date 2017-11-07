@@ -4,10 +4,10 @@
 * Description: Plugin metereologia: traduz shortcode e cria widget
 * Version: 1.0
 * Author: Soraia Martins
-* License: GPLv2
-* License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 * Text Domain: weather-text-plugin
 * Domain Path: /languages
+* License: GPLv2
+* License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 * 
 * WeatherTextPlugin is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -22,15 +22,15 @@
 * You should have received a copy of the GNU General Public License
 * along with WeatherTextPlugin. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
 */
-
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 //incluí a classe do widget
-require_once( plugin_dir_path( __FILE__ ) . 'wtp_widget.php');
+require_once( plugin_dir_path( __FILE__ ) . '/includes/wtp_widget.php');
 
 //adicionar ação para carregar o textdomain do plugin para i18n quando os plugins são carregados
 add_action( 'plugins_loaded', 'wtp_load_textdomain' );
 
 function wtp_load_textdomain() {
-   load_plugin_textdomain( 'weather-text-plugin', false,dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+   load_plugin_textdomain( 'weather-text-plugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
 
 // registar a função para correr na ativação do plugin

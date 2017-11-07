@@ -6,6 +6,10 @@ msgstr ""
 msgid "Weather plugin"
 msgstr ""
 
+#: weather-text-plugin.php:77
+msgid "Location"
+msgstr ""
+
 #: weather-text-plugin.php:78
 msgid "Latitude"
 msgstr ""

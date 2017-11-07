@@ -20,6 +20,10 @@ msgstr "Temperatura em %1$s, %2$s, %3$s é %4$sºC"
 msgid "Weather plugin"
 msgstr "Plugin Metereologia"
 
+#: weather-text-plugin.php:77
+msgid "Location"
+msgstr "Localização"
+
 #: weather-text-plugin.php:78
 msgid "Latitude"
 msgstr "Latitude"
@@ -57,6 +61,3 @@ msgstr "Temperatura: %sºC"
 
 #~ msgid "is"
 #~ msgstr "é"
-
-#~ msgid "Location"
-#~ msgstr "Localização"
