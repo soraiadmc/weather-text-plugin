@@ -1,25 +1,29 @@
-#: weather-text-plugin.php:53
-msgid "Temperature"
+#: weather-text-plugin.php:54
+msgid "Temperature in %1$s, %2$s, %3$s is %4$sºC"
 msgstr ""
 
-#: weather-text-plugin.php:55
-msgid "is"
-msgstr ""
-
-#: weather-text-plugin.php:63
+#: weather-text-plugin.php:68 e 95
 msgid "Weather plugin"
 msgstr ""
 
-#: weather-text-plugin.php:77
-msgid "Location"
-msgstr ""
-
-#: weather-text-plugin.php:83
+#: weather-text-plugin.php:78
 msgid "Latitude"
 msgstr ""
 
-#: weather-text-plugin.php:87
+#: weather-text-plugin.php:79
 msgid "Longitude"
+msgstr ""
+
+#: weather-text-plugin.php:82
+msgid "Set the latitude and longitude of the wanted location."
+msgstr ""
+
+#: weather-text-plugin.php:124
+msgid "The %s can\'t be empty"
+msgstr ""
+
+#: weather-text-plugin.php:129
+msgid "The %s has to be a number"
 msgstr ""
 
 #: wtp_widget.php:11

@@ -1,26 +1,26 @@
 <?php
-/*
-Plugin Name: WeatherTextPlugin
-Description: Plugin metereologia: traduz shortcode e cria widget
-Version: 1.0
-Author: Soraia Martins
-License: GPLv2
-License URI:  https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: weather-text-plugin
-Domain Path: /languages
-
-WeatherTextPlugin is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-any later version.
- 
-WeatherTextPlugin is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
- 
-You should have received a copy of the GNU General Public License
-along with WeatherTextPlugin. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
+/**
+* Plugin Name: WeatherTextPlugin
+* Description: Plugin metereologia: traduz shortcode e cria widget
+* Version: 1.0
+* Author: Soraia Martins
+* License: GPLv2
+* License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+* Text Domain: weather-text-plugin
+* Domain Path: /languages
+* 
+* WeatherTextPlugin is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* any later version.
+*  
+* WeatherTextPlugin is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*  
+* You should have received a copy of the GNU General Public License
+* along with WeatherTextPlugin. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
 */
 
 require_once( plugin_dir_path( __FILE__ ) . 'wtp_widget.php');
@@ -51,9 +51,13 @@ function wtp_weathertext_shortcode( $atts ) {
     }
 
     $weather_info_channel=$weather_info->query->results->channel;
-    return __('Temperature','weather-text-plugin')." 
-            {$weather_info_channel->location->city}, {$weather_info_channel->location->region}, {$weather_info_channel->location->country} 
-            ".__('is','weather-text-plugin')." {$weather_info_channel->item->condition->temp}ºC.";
+    return sprintf(__('Temperature in %1$s, %2$s, %3$s is %4$sºC','weather-text-plugin'),
+                    $weather_info_channel->location->city, 
+                    $weather_info_channel->location->region, 
+                    $weather_info_channel->location->country,
+                    $weather_info_channel->item->condition->temp
+            );
+           
 }
 // adicionar shortcode
 add_shortcode( 'weathertext', 'wtp_weathertext_shortcode' );
@@ -62,47 +66,89 @@ add_shortcode( 'weathertext', 'wtp_weathertext_shortcode' );
 add_action("admin_menu", "wtp_addWpcMenu");
 function wtp_addWpcMenu(){
     add_menu_page(__('Weather plugin','weather-text-plugin'), __('Weather plugin','weather-text-plugin'), 'administrator', "weather-plugin-config", "wtp_weather_plugin_settings_page");
-    //call register settings function
+    // chama a função para registar as configs
 	add_action( 'admin_init', 'wtp_register_weather_plugin_settings' );
 }
 
 function wtp_register_weather_plugin_settings() {
-	//register our settings
-	register_setting( 'weather-settings-group', 'latitude' );
-	register_setting( 'weather-settings-group', 'longitude' );
+	//regista as configs necessárias
+	register_setting( 'weather-settings-options', 'latitude', 'wtp_settinglat_validate');
+    register_setting( 'weather-settings-options', 'longitude', 'wtp_settinglng_validate');
+    add_settings_section('wtp_section_location', __('Location','weather-text-plugin'), 'wtp_location_section_text', 'weather-plugin-config');
+    add_settings_field('wtp_field_latitude', __('Latitude','weather-text-plugin'), 'wtp_field_latitude_input', 'weather-plugin-config', 'wtp_section_location');
+    add_settings_field('wtp_field_longitude', __('Longitude','weather-text-plugin'), 'wtp_field_longitude_input', 'weather-plugin-config', 'wtp_section_location');
+}
+function wtp_location_section_text() {
+    echo '<p>'.__('Set the latitude and longitude of the wanted location.','weather-text-plugin').'</p>';
+}
+function wtp_field_latitude_input() {
+    $lat = get_option('latitude');
+    echo "<input id='wtp_field_longitude' name='latitude' size='40' type='text' value='{$lat}' />";
+}
+function wtp_field_longitude_input() {
+    $lng = get_option('longitude');
+    echo "<input id='wtp_field_longitude' name='longitude' size='40' type='text' value='{$lng}' />";
 }
 
-function wtp_weather_plugin_settings_page() {
-?>
+function wtp_weather_plugin_settings_page() { ?>
     <div class="wrap">
-        <h3><?php_e('Location','weather-text-plugin');?></h3>
+        <h1><?php _e('Weather plugin','weather-text-plugin');?></h1>
+        <?php settings_errors(); ?>
         <form method="post" action="options.php">
-            <?php settings_fields( 'weather-settings-group' ); ?>
-            <?php do_settings_sections( 'weather-settings-group' ); ?>
-            <table class="form-table">
-                <tr valign="top">
-                <th scope="row"><?php _e('Latitude','weather-text-plugin'); ?></th>
-                <td><input type="text" name="latitude" value="<?php echo esc_attr( get_option('latitude') ); ?>" /></td>
-                </tr>
-                <tr valign="top">
-                <th scope="row"><?php _e('Longitude','weather-text-plugin'); ?></th>
-                <td><input type="text" name="longitude" value="<?php echo esc_attr( get_option('longitude') ); ?>" /></td>
-                </tr>
-            </table>
-            
-            <?php submit_button(); ?>
-
+            <?php 
+            settings_fields( 'weather-settings-options' ); 
+            do_settings_sections ('weather-plugin-config');
+            submit_button(); 
+            ?>
         </form>
     </div>
 <?php } 
 
-// Register and load the widget
+function wtp_settinglat_validate($input) {
+	
+	return wtp_setting_validate($input,'latitude');
+	
+}
+function wtp_settinglng_validate($input) {
+	
+	return wtp_setting_validate($input,'longitude');
+	
+}
+function wtp_setting_validate($input,$field) {
+	
+	$message = null;
+    $type = null;
+    $valid = true;
+	
+	if (empty($input)) {
+        $message = sprintf(__('The %s can\'t be empty','weather-text-plugin'), $field);
+        $type = 'error';
+        $valid = false;
+        
+	} else if(!is_numeric(trim($input))) {
+        $message = sprintf(__('The %s has to be a number','weather-text-plugin'), $field);
+        $type = 'error';
+        $valid = false;
+        
+	} 
+	
+	if($valid){
+        return $input;
+    }
+    else{
+        add_settings_error($field, 'lat_error_notice', $message, $type);
+        return get_option($field);
+    } 
+	
+}
+
+// regista e carrega o widget
 function wtp_load_widget() {
     register_widget( 'wtp_widget' );
 }
 add_action( 'widgets_init', 'wtp_load_widget' );
 
-//function to do the request
+// função para fazer o pedidio à api de metereologia
 function wtp_getWeather($lat,$lng){
     $response = wp_remote_get("https://simple-weather.p.mashape.com/weatherdata?lat={$lat}&lng={$lng}",
         array("headers" => array(

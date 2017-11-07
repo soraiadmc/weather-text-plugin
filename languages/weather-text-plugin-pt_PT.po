@@ -12,29 +12,33 @@ msgstr ""
 "X-Generator: Poedit 2.0.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: weather-text-plugin.php:53
-msgid "Temperature"
-msgstr "Temperatura"
+#: weather-text-plugin.php:54
+msgid "Temperature in %1$s, %2$s, %3$s is %4$sºC"
+msgstr "Temperatura em %1$s, %2$s, %3$s é %4$sºC"
 
-#: weather-text-plugin.php:55
-msgid "is"
-msgstr "é"
-
-#: weather-text-plugin.php:63
+#: weather-text-plugin.php:68 e 95
 msgid "Weather plugin"
 msgstr "Plugin Metereologia"
 
-#: weather-text-plugin.php:77
-msgid "Location"
-msgstr "Localização"
-
-#: weather-text-plugin.php:83
+#: weather-text-plugin.php:78
 msgid "Latitude"
 msgstr "Latitude"
 
-#: weather-text-plugin.php:87
+#: weather-text-plugin.php:79
 msgid "Longitude"
 msgstr "Longitude"
+
+#: weather-text-plugin.php:82
+msgid "Set the latitude and longitude of the wanted location."
+msgstr "Configurar a latitude e longitude da localização desejada."
+
+#: weather-text-plugin.php:124
+msgid "The %s can't be empty"
+msgstr "A %s não pode ser vazio"
+
+#: weather-text-plugin.php:129
+msgid "The %s has to be a number"
+msgstr "A %s tem de ser um número"
 
 #: wtp_widget.php:11
 msgid "Weather Widget"
@@ -47,3 +51,12 @@ msgstr "Metereologia atual apartir da latitude e longitude"
 #: wtp_widget.php:40
 msgid "Temperature: %sºC"
 msgstr "Temperatura: %sºC"
+
+#~ msgid "Temperature"
+#~ msgstr "Temperatura"
+
+#~ msgid "is"
+#~ msgstr "é"
+
+#~ msgid "Location"
+#~ msgstr "Localização"
