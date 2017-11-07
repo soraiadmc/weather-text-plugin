@@ -23,6 +23,8 @@ You should have received a copy of the GNU General Public License
 along with WeatherTextPlugin. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
 */
 
+require_once( plugin_dir_path( __FILE__ ) . 'wtp_widget.php');
+
 add_action( 'plugins_loaded', 'wtp_load_textdomain' );
 
 function wtp_load_textdomain() {
@@ -94,7 +96,6 @@ function wtp_weather_plugin_settings_page() {
     </div>
 <?php } 
 
-include( plugin_dir_path( __FILE__ ) . 'wtp_widget.php');
 // Register and load the widget
 function wtp_load_widget() {
     register_widget( 'wtp_widget' );
