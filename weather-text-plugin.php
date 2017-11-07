@@ -23,8 +23,10 @@
 * along with WeatherTextPlugin. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
 */
 
+//incluí a classe do widget
 require_once( plugin_dir_path( __FILE__ ) . 'wtp_widget.php');
 
+//adicionar ação para carregar o textdomain do plugin para i18n quando os plugins são carregados
 add_action( 'plugins_loaded', 'wtp_load_textdomain' );
 
 function wtp_load_textdomain() {
@@ -33,13 +35,15 @@ function wtp_load_textdomain() {
 
 // registar a função para correr na ativação do plugin
 register_activation_hook( __FILE__, 'wtp_install_hook' );
-
+// função a executar na ativação do plugin
 function wtp_install_hook() {
   // criar as opções necessárias
   add_option( 'latitude', '41.355728' );
   add_option( 'longitude', '-8.40059' );
 }
 
+// adicionar shortcode
+add_shortcode( 'weathertext', 'wtp_weathertext_shortcode' );
 // função a executar no shortcode
 function wtp_weathertext_shortcode( $atts ) {
     $lat=get_option("latitude");
@@ -59,8 +63,6 @@ function wtp_weathertext_shortcode( $atts ) {
             );
            
 }
-// adicionar shortcode
-add_shortcode( 'weathertext', 'wtp_weathertext_shortcode' );
 
 // adicionar menu para configurar opções do plugin
 add_action("admin_menu", "wtp_addWpcMenu");
@@ -68,26 +70,6 @@ function wtp_addWpcMenu(){
     add_menu_page(__('Weather plugin','weather-text-plugin'), __('Weather plugin','weather-text-plugin'), 'administrator', "weather-plugin-config", "wtp_weather_plugin_settings_page");
     // chama a função para registar as configs
 	add_action( 'admin_init', 'wtp_register_weather_plugin_settings' );
-}
-
-function wtp_register_weather_plugin_settings() {
-	//regista as configs necessárias
-	register_setting( 'weather-settings-options', 'latitude', 'wtp_settinglat_validate');
-    register_setting( 'weather-settings-options', 'longitude', 'wtp_settinglng_validate');
-    add_settings_section('wtp_section_location', __('Location','weather-text-plugin'), 'wtp_location_section_text', 'weather-plugin-config');
-    add_settings_field('wtp_field_latitude', __('Latitude','weather-text-plugin'), 'wtp_field_latitude_input', 'weather-plugin-config', 'wtp_section_location');
-    add_settings_field('wtp_field_longitude', __('Longitude','weather-text-plugin'), 'wtp_field_longitude_input', 'weather-plugin-config', 'wtp_section_location');
-}
-function wtp_location_section_text() {
-    echo '<p>'.__('Set the latitude and longitude of the wanted location.','weather-text-plugin').'</p>';
-}
-function wtp_field_latitude_input() {
-    $lat = get_option('latitude');
-    echo "<input id='wtp_field_longitude' name='latitude' size='40' type='text' value='{$lat}' />";
-}
-function wtp_field_longitude_input() {
-    $lng = get_option('longitude');
-    echo "<input id='wtp_field_longitude' name='longitude' size='40' type='text' value='{$lng}' />";
 }
 
 function wtp_weather_plugin_settings_page() { ?>
@@ -103,6 +85,15 @@ function wtp_weather_plugin_settings_page() { ?>
         </form>
     </div>
 <?php } 
+
+function wtp_register_weather_plugin_settings() {
+	//regista as configs necessárias
+	register_setting( 'weather-settings-options', 'latitude', 'wtp_settinglat_validate');
+    register_setting( 'weather-settings-options', 'longitude', 'wtp_settinglng_validate');
+    add_settings_section('wtp_section_location', __('Location','weather-text-plugin'), 'wtp_location_section_text', 'weather-plugin-config');
+    add_settings_field('wtp_field_latitude', __('Latitude','weather-text-plugin'), 'wtp_field_latitude_input', 'weather-plugin-config', 'wtp_section_location');
+    add_settings_field('wtp_field_longitude', __('Longitude','weather-text-plugin'), 'wtp_field_longitude_input', 'weather-plugin-config', 'wtp_section_location');
+}
 
 function wtp_settinglat_validate($input) {
 	
@@ -140,6 +131,17 @@ function wtp_setting_validate($input,$field) {
         return get_option($field);
     } 
 	
+}
+function wtp_location_section_text() {
+    echo '<p>'.__('Set the latitude and longitude of the wanted location.','weather-text-plugin').'</p>';
+}
+function wtp_field_latitude_input() {
+    $lat = get_option('latitude');
+    echo "<input id='wtp_field_longitude' name='latitude' size='40' type='text' value='{$lat}' />";
+}
+function wtp_field_longitude_input() {
+    $lng = get_option('longitude');
+    echo "<input id='wtp_field_longitude' name='longitude' size='40' type='text' value='{$lng}' />";
 }
 
 // regista e carrega o widget
