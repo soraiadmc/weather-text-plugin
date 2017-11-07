@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WeatherTextPlugin
-Description: Plugin de teste
+Description: Plugin metereologia: traduz shortcode e cria widget
 Version: 1.0
 Author: Soraia Martins
 License: GPLv2
